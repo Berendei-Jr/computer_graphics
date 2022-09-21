@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="700" height="700" style="border:1px solid #FFFFFF;"></canvas>
+    <script>
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+
+        var v = 0;
+        var h = 0;
+        var vertical = false
+	    var direction = 2;
+
+        document.addEventListener("keydown", function(event) {
+                if (event.code == "ArrowRight") {
+                    vertical = true
+                    direction = 10;
+                } else if (event.code == "ArrowLeft") {
+                    vertical = true
+                    direction = -10;
+                } else if (event.code == "ArrowUp") {
+                    vertical = false
+                    direction = -10;
+                } else if (event.code == "ArrowDown") {
+                    vertical = false
+                    direction = 10;
+                }		
+                if (vertical) {
+                    h += direction;
+                } else {
+                    v += direction;
+                }
+            });
+
+        setInterval(function() {
+
+            // создаём новый буфер 300x200 пикселей
+            var data = ctx.createImageData(c.width, c.height);
+            
+
+            var radius = 50;
+            var x_center = data.width/2;
+            var y_center = data.width/2;
+
+
+            // обходим в цикле каждый пиксель
+            for(var x = 0; x < data.width; x++) {
+                for(var y = 0; y < data.height; y++) {
+                var val = 0;
+                if ( (x-h - x_center)*(x-h - x_center) + (y-v - y_center)*(y-v - y_center) <= radius*radius  ) {
+                    val = 255;
+                }
+                var index = (y*data.width+x)*4;  // вычисляем индекс
+                data.data[index] = val;   // красный
+                data.data[index+1] = val; // зелёный
+                data.data[index+2] = val; // синий
+                data.data[index+3] = 255; // явно задаём альфу как 255
+                }
+            }
+            // устанавливаем данные обратно
+            ctx.putImageData(data,0,0);
+
+        }, 10)
+    </script>
+</body>
+</html>
