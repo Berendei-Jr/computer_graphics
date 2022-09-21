@@ -40,30 +40,25 @@
 
         setInterval(function() {
 
-            // создаём новый буфер 300x200 пикселей
             var data = ctx.createImageData(c.width, c.height);
             
-
             var radius = 50;
             var x_center = data.width/2;
             var y_center = data.width/2;
 
-
-            // обходим в цикле каждый пиксель
             for(var x = 0; x < data.width; x++) {
                 for(var y = 0; y < data.height; y++) {
                 var val = 0;
                 if ( (x-h - x_center)*(x-h - x_center) + (y-v - y_center)*(y-v - y_center) <= radius*radius  ) {
                     val = 255;
                 }
-                var index = (y*data.width+x)*4;  // вычисляем индекс
-                data.data[index] = val;   // красный
-                data.data[index+1] = val; // зелёный
-                data.data[index+2] = val; // синий
-                data.data[index+3] = 255; // явно задаём альфу как 255
+                var index = (y*data.width+x)*4;
+                data.data[index] = val;
+                data.data[index+1] = val;
+                data.data[index+2] = val;
+                data.data[index+3] = 255;
                 }
             }
-            // устанавливаем данные обратно
             ctx.putImageData(data,0,0);
 
         }, 10)
