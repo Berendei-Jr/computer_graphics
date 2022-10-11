@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="700" height="700" style="border:1px solid #FFFFFF;"></canvas>
+    <script>
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+
+        let E0 = 0;
+        const x0 = 100;
+        const y0 = 100;
+        const x1 = 200;
+        const y1 = 400;
+        let y = y0;
+        let x = x0;
+
+        window.onload = function() {
+            let pixel = ctx.createImageData(1,1);
+            pixel.data[0] = 0;
+            pixel.data[1] = 0;
+            pixel.data[2] = 0;
+            pixel.data[3] = 255;
+
+            if ((y1 - y0)/(x1-x0) <= 1) {
+                for (; x < x1; ++x) {
+                    E0 += 2*(y1 - y0);
+                    console.log("x=", x, " y = ", y, "E = ", E0);
+                    if (E0 > (x1 - x0)) {
+                        E0 -= 2*(x1 - x0);
+                        y += 1;
+                    }
+                
+                    ctx.putImageData(pixel, x, y);
+                }
+            } else {
+                for (; y < y1; ++y) {
+                    E0 += 2*(x1 - x0);
+                    console.log("x=", x, " y = ", y, "E = ", E0);
+                    if (E0 > (y1 - y0)) {
+                        E0 -= 2*(y1 - y0);
+                        x += 1;
+                    }
+                
+                    ctx.putImageData(pixel, x, y);
+                }
+
+            }
+        };        
+
+    </script>
+</body>
+</html>
